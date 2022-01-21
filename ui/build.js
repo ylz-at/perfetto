@@ -700,9 +700,10 @@ function mklink(src, dst) {
   // If the symlink already points to the right place don't touch it. This is
   // to avoid changing the mtime of the ui/ dir when unnecessary.
   if (fs.existsSync(dst)) {
-    if (fs.lstatSync(dst).isSymbolicLink() && fs.readlinkSync(dst) === src) {
-      return;
-    } else {
+    if (fs.lstatSync(dst).isSymbolicLink()) {
+      if (fs.readlinkSync(dst) === src) {
+        return;
+      }
       fs.unlinkSync(dst);
     }
   }
